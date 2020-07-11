@@ -22,21 +22,24 @@ image_width = eval(str(vgg_model.layers[0].output.shape[1]))
 image_height = eval(str(vgg_model.layers[0].output.shape[2]))
 
 files = [imgs_path + x for x in os.listdir(imgs_path) if "jpg" in x]
-print("number of images:", len(files))
+files = files[:100]
+print("Number of images:", len(files))
 
-original = load_img(files[5],  target_size=(image_width, image_height))
+importedImages = []
 
-plt.imshow(original)
-plt.show()
+for f in files:
+    filename = f
+    original = load_img(filename, target_size=(image_width, image_height))
+    numpy_image = img_to_array(original)
+    image_batch = np.expand_dims(numpy_image, axis=0)
+    
+    importedImages.append(image_batch)
+    
+images = np.vstack(importedImages)
+processed_imgs = preprocess_input(images.copy())
 
-numpy_image = img_to_array(original)
-images = np.expand_dims(numpy_image, axis=0)
-print(images.shape)
+imgs_features = feat_extractor.predict(processed_imgs)
 
-processed_image = preprocess_input(images.copy())
-
-img_features = feat_extractor.predict(processed_image)
-
-print("features successfully extracted!")
-print("number of image features:", img_features.size)
-print(img_features)
+print("Features successfully extracted!")
+print("Number of image features:", imgs_features.shape)
+print(imgs_features)
