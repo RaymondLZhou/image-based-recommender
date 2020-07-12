@@ -54,7 +54,7 @@ def deprocess_img(processed_img):
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
-plt.figure(figsize=(10,10))
+plt.figure(figsize=(10, 10))
 
 content = load_img('../data/content/turtle.jpg').astype('uint8')
 style = load_img('../data/style/Hokusai.jpg')
@@ -77,3 +77,31 @@ style_layers = ['block1_conv1',
 
 num_content_layers = len(content_layers)
 num_style_layers = len(style_layers)
+
+def get_model():
+    vgg = tf.keras.applications.vgg19.VGG19(include_top=False, weights='imagenet')
+    vgg.trainable = False
+
+    style_outputs = [vgg.get_layer(name).output for name in style_layers]
+    content_outputs = [vgg.get_layer(name).output for name in content_layers]
+    model_outputs = style_outputs + content_outputs
+
+    return models.Model(vgg.input, model_outputs)
+
+def get_content_loss(base_content, target):
+    return tf.reduce_mean(tf.square(base_content - target))
+
+def gram_matrix(input_tensor):
+    channels = int(input_tensor.shape[-1])
+    a = tf.reshape(input_tensor, [-1, channels])
+    n = tf.shape(a)[0]
+    gram = tf.matmul(a, a, transpose_a=True)
+    return gram / tf.cast(n, tf.float32)
+
+def get_style_loss(base_style, gram_target):
+    height, width, channels = base_style.get_shape().as_list()
+    gram_style = gram_matrix(base_style)
+  
+    return tf.reduce_mean(tf.square(gram_style - gram_target))
+
+
