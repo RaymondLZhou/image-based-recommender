@@ -1,3 +1,3 @@
-# Image-based Recommender
+# Artistic Learning
 
-Recommender system built on TensorFlow and Keras in Python using a convolutional neural network (CNN). Work in progress.
+Neural Style Transfer using TensorFlow and Keras with a convolutional neural network (CNN). Work in progress.
