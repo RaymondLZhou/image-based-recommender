@@ -114,7 +114,7 @@ def train_step(image):
 content_path = '../data/content/turtle.jpg'
 style_path = '../data/style/Hokusai.jpg'
 
-plt.figure(figsize=(10, 10)) 
+plt.figure(figsize=(15, 15)) 
 
 content_image = load_image(content_path)
 style_image = load_image(style_path)
@@ -164,17 +164,19 @@ for n in range(epochs):
         train_step(image)
         print(".", end='')
 
+    print()
+
     # display.display(tensor_to_image(image))
 
 end = time.time()
-print("Total time: {:.1f}".format(end-start))
+print("Total time: {:.1f}s".format(end-start))
 
 output_path = '../data/output/stylized.jpg'
 tensor_to_image(image).save(output_path)
 
 new_image = load_image(output_path)
 
-plt.figure(figsize=(10, 10)) 
+plt.figure(figsize=(15, 15)) 
 
 plt.subplot(1, 3, 1)
 show_image(content_image, 'Content Image')
@@ -185,4 +187,5 @@ show_image(style_image, 'Style Image')
 plt.subplot(1, 3, 3)
 show_image(new_image, 'New Image')
 
+plt.tight_layout(pad=5.0)
 plt.show()
