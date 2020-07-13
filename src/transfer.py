@@ -119,6 +119,21 @@ def train_step(image):
     
     image.assign(clip_0_1(image))
 
+def transfer_style(image, epochs, steps_per_epoch):
+    start = time.time()
+
+    for n in range(epochs):
+        print("Training epoch: {} out of {}".format(n, epochs))
+
+        for _ in range(steps_per_epoch):
+            train_step(image)
+
+        print()
+
+    end = time.time()
+
+    print("Total time: {:.1f}s".format(end-start))
+
 def tensor_to_image(tensor):
     tensor = tensor * 255
     tensor = np.array(tensor, dtype=np.uint8)
@@ -160,21 +175,9 @@ steps_per_epoch = 2
 
 image = tf.Variable(content_image)
 
-start = time.time()
-
-for n in range(epochs):
-    print("Training epoch: {} out of {}".format(n, epochs))
-
-    for m in range(steps_per_epoch):
-        train_step(image)
-
-    print()
-
-end = time.time()
-
-print("Total time: {:.1f}s".format(end-start))
+transfer_style(image, epochs, steps_per_epoch)
 
 tensor_to_image(image).save(output_path)
-new_image = load_image(output_path)
 
+new_image = load_image(output_path)
 plot_images(content_image, style_image, new_image)
