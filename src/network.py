@@ -6,14 +6,6 @@ import numpy as np
 import PIL.Image
 import time
 
-def tensor_to_image(tensor):
-    tensor = tensor*255
-    tensor = np.array(tensor, dtype=np.uint8)
-    if np.ndim(tensor)>3:
-        assert tensor.shape[0] == 1
-        tensor = tensor[0]
-    return PIL.Image.fromarray(tensor)
-
 def load_img(path_to_img):
     max_dim = 512
     img = tf.io.read_file(path_to_img)
@@ -30,24 +22,39 @@ def load_img(path_to_img):
     img = img[tf.newaxis, :]
     return img
 
-def imshow(image, title=None):
+def show_image(image, title=None):
     if len(image.shape) > 3:
         image = tf.squeeze(image, axis=0)
 
     plt.imshow(image)
+
     if title:
         plt.title(title)
 
-plt.figure(figsize=(10,10)) 
+def tensor_to_image(tensor):
+    tensor = tensor*255
+    tensor = np.array(tensor, dtype=np.uint8)
 
-content_image = load_img('../data/content/turtle.jpg')
-style_image = load_img('../data/style/Hokusai.jpg')
+    if np.ndim(tensor) > 3:
+        assert tensor.shape[0] == 1
+        tensor = tensor[0]
+    
+    return PIL.Image.fromarray(tensor)
+
+content_path = '../data/content/turtle.jpg'
+style_path = '../data/style/Hokusai.jpg'
+
+plt.figure(figsize=(10, 10)) 
+
+content_image = load_img(content_path)
+style_image = load_img(style_path)
 
 plt.subplot(1, 2, 1)
-imshow(content_image, 'Content Image')
+show_image(content_image, 'Content Image')
 
 plt.subplot(1, 2, 2)
-imshow(style_image, 'Style Image')
+show_image(style_image, 'Style Image')
+
 plt.show()
 
 content_layers = ['block5_conv2'] 
@@ -148,8 +155,8 @@ image = tf.Variable(content_image)
 
 start = time.time()
 
-epochs = 10
-steps_per_epoch = 20
+epochs = 1
+steps_per_epoch = 2
 
 step = 0
 for n in range(epochs):
@@ -168,5 +175,20 @@ print("Train step: {}".format(step))
 end = time.time()
 print("Total time: {:.1f}".format(end-start))
 
-file_name = '../data/output/stylized-image.jpg'
-tensor_to_image(image).save(file_name)
+output_path = '../data/output/stylized-image.jpg'
+tensor_to_image(image).save(output_path)
+
+new_image = load_img(output_path)
+
+plt.figure(figsize=(10, 10)) 
+
+plt.subplot(1, 3, 1)
+show_image(content_image, 'Content Image')
+
+plt.subplot(1, 3, 2)
+show_image(style_image, 'Style Image')
+
+plt.subplot(1, 3, 3)
+show_image(new_image, 'New Image')
+
+plt.show()
