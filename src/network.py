@@ -32,15 +32,22 @@ def show_image(image, title=None):
     if title:
         plt.title(title)
 
-def tensor_to_image(tensor):
-    tensor = tensor * 255
-    tensor = np.array(tensor, dtype=np.uint8)
+def plot_images(content_image, style_image, new_image=[]):
+    cols = 3 if new_image != [] else 2
 
-    if np.ndim(tensor) > 3:
-        assert tensor.shape[0] == 1
-        tensor = tensor[0]
-    
-    return PIL.Image.fromarray(tensor)
+    plt.figure(figsize=(15, 15)) 
+
+    plt.subplot(1, cols, 1)
+    show_image(content_image, 'Content Image')
+
+    plt.subplot(1, cols, 2)
+    show_image(style_image, 'Style Image')
+
+    if cols == 3:
+        plt.subplot(1, cols, 3)
+        show_image(new_image, 'New Image')
+
+    plt.show()
 
 def vgg_layers(layer_names):
     vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet')
@@ -109,31 +116,30 @@ def train_step(image):
 
     grad = tape.gradient(loss, image)
     optimizer.apply_gradients([(grad, image)])
+    
     image.assign(clip_0_1(image))
+
+def tensor_to_image(tensor):
+    tensor = tensor * 255
+    tensor = np.array(tensor, dtype=np.uint8)
+
+    if np.ndim(tensor) > 3:
+        assert tensor.shape[0] == 1
+        tensor = tensor[0]
+    
+    return PIL.Image.fromarray(tensor)
 
 content_path = '../data/content/turtle.jpg'
 style_path = '../data/style/Hokusai.jpg'
-
-plt.figure(figsize=(15, 15)) 
+output_path = '../data/output/stylized.jpg'
 
 content_image = load_image(content_path)
 style_image = load_image(style_path)
 
-plt.subplot(1, 2, 1)
-show_image(content_image, 'Content Image')
-
-plt.subplot(1, 2, 2)
-show_image(style_image, 'Style Image')
-
-plt.show()
+plot_images(content_image, style_image)
 
 content_layers = ['block5_conv2'] 
-
-style_layers = ['block1_conv1',
-                'block2_conv1',
-                'block3_conv1', 
-                'block4_conv1', 
-                'block5_conv1']
+style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
 
 num_content_layers = len(content_layers)
 num_style_layers = len(style_layers)
@@ -147,45 +153,28 @@ optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
 style_weight = 1e-2
 content_weight = 1e4
-
 total_variation_weight = 30
+
+epochs = 1
+steps_per_epoch = 2
 
 image = tf.Variable(content_image)
 
 start = time.time()
-
-epochs = 1
-steps_per_epoch = 2
 
 for n in range(epochs):
     print("Training epoch: {} out of {}".format(n, epochs))
 
     for m in range(steps_per_epoch):
         train_step(image)
-        print(".", end='')
 
     print()
 
-    # display.display(tensor_to_image(image))
-
 end = time.time()
+
 print("Total time: {:.1f}s".format(end-start))
 
-output_path = '../data/output/stylized.jpg'
 tensor_to_image(image).save(output_path)
-
 new_image = load_image(output_path)
 
-plt.figure(figsize=(15, 15)) 
-
-plt.subplot(1, 3, 1)
-show_image(content_image, 'Content Image')
-
-plt.subplot(1, 3, 2)
-show_image(style_image, 'Style Image')
-
-plt.subplot(1, 3, 3)
-show_image(new_image, 'New Image')
-
-plt.tight_layout(pad=5.0)
-plt.show()
+plot_images(content_image, style_image, new_image)
