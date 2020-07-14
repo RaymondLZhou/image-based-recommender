@@ -7,10 +7,10 @@ import learn
 content_name = 'dog'
 style_name = 'NASA'
 
-epochs = 1
-steps_per_epoch = 2
+epochs = 10
+steps_per_epoch = 20
 
-optimizer = tf.optimizers.Adam(learning_rate=0.02)
+optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
 style_weight = 1e-2
 content_weight = 1e4
