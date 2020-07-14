@@ -125,7 +125,7 @@ def transfer_style(image, epochs, steps_per_epoch):
     for n in range(epochs):
         start_epoch = time.time()
 
-        print("Training epoch: {} out of {}".format(n, epochs))
+        print("Training epoch: {} out of {}".format(n+1, epochs))
 
         for _ in range(steps_per_epoch):
             train_step(image)
@@ -146,21 +146,22 @@ def tensor_to_image(tensor):
     
     return PIL.Image.fromarray(tensor)
 
+content_name = 'dog'
+style_name = 'NASA'
+
+epochs = 10
+steps_per_epoch = 20
+
+image_path = '../data/'
+
 content_layers = ['block5_conv2'] 
 style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
 
-optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
+optimizer = tf.optimizers.Adam(learning_rate=0.02)
 
 style_weight = 1e-2
 content_weight = 1e4
 total_variation_weight = 30
-
-content_name = 'turtle'
-style_name = 'Hokusai'
-image_path = '../data/'
-
-epochs = 10
-steps_per_epoch = 20
 
 content_path = image_path + 'content/' + content_name + '.jpg'
 style_path = image_path + 'style/' + style_name + '.jpg'
