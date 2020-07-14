@@ -123,16 +123,18 @@ def transfer_style(image, epochs, steps_per_epoch):
     start = time.time()
 
     for n in range(epochs):
+        start_epoch = time.time()
+
         print("Training epoch: {} out of {}".format(n, epochs))
 
         for _ in range(steps_per_epoch):
             train_step(image)
+        
+        end = time.time()
 
+        print("Epoch time: {:.1f}s".format(end-start_epoch))
+        print("Total time: {:.1f}s".format(end-start))
         print()
-
-    end = time.time()
-
-    print("Total time: {:.1f}s".format(end-start))
 
 def tensor_to_image(tensor):
     tensor = tensor * 255
@@ -157,8 +159,8 @@ content_name = 'turtle'
 style_name = 'Hokusai'
 image_path = '../data/'
 
-epochs = 1
-steps_per_epoch = 2
+epochs = 10
+steps_per_epoch = 20
 
 content_path = image_path + 'content/' + content_name + '.jpg'
 style_path = image_path + 'style/' + style_name + '.jpg'
