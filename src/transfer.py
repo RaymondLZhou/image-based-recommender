@@ -8,9 +8,9 @@ content_name = 'dog'
 style_name = 'NASA'
 
 epochs = 10
-steps_per_epoch = 20
+steps_per_epoch = 320
 
-optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
+optimizer = tf.optimizers.Adam(learning_rate=0.02)
 
 style_weight = 1e-2
 content_weight = 1e4
