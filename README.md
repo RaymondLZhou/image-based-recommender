@@ -15,6 +15,7 @@ The representations of content and style in the convolutional neural network are
 ## Examples
 
 Coming soon.
+
 * Tuebingen with all (7)
 * Dog with NASA
 * Kenobi with Turner
@@ -41,8 +42,8 @@ These can be installed using ```pip install library-name```.
 How to run the application
 
 1. Clone the repository.
-2. Open [transfer.py](transfer.py). Adjust the hyperparameters at the top of the file as needed. 
-3. Run [transfer.py](transfer.py) with ```python transfer.py```. The output image is saved in [data/output](data/output).
+2. Open [transfer.py](src/transfer.py). Adjust the hyperparameters at the top of the file as needed. 
+3. Run [transfer.py](src/transfer.py) with ```python transfer.py```. The output image is saved in [data/output](data/output).
 
 ## Built With
 
