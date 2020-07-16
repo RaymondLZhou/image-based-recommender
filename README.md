@@ -47,9 +47,7 @@ How to run the application
 
 ## Built With
 
-* [First](First) - First
-* [Second](Second) - Second
-* [Third](Third) - Third
+* [TensorFlow](https://www.tensorflow.org/) - Deep Learning
 
 ## License
 
