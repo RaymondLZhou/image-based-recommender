@@ -29,10 +29,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 Python must be installed, along with the following libraries.
 
-* tensorflow
-* matplotlib
-* numpy
-* PIL
+* TensorFlow
+* Matplotlib
+* NumPy
+* Pillow
 
 These can be installed using ```pip install library-name```.
 
