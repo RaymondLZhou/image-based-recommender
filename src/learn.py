@@ -57,7 +57,10 @@ def transfer_style(image, epochs, steps_per_epoch, optimizer, layers, inputs, we
 
         print("Training epoch: {} out of {}".format(n+1, epochs))
 
-        for _ in range(steps_per_epoch):
+        for i in range(steps_per_epoch):
+            if (i+1) % 50 == 0:
+                print("Step: {}".format(i+1))
+
             train_step(image, optimizer, layers, inputs, weights, extractor)
         
         end = time.time()

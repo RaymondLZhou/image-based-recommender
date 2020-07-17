@@ -4,11 +4,11 @@ import images
 import model
 import learn
 
-content_name = 'dog'
-style_name = 'NASA'
+content_name = 'cat'
+style_name = 'Kandinsky'
 
 epochs = 10
-steps_per_epoch = 320
+steps_per_epoch = 350
 
 optimizer = tf.optimizers.Adam(learning_rate=0.02)
 
