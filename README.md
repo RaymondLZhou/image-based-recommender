@@ -16,11 +16,11 @@ The representations of content and style in the convolutional neural network are
 
 Coming soon.
 
-* Tuebingen with all (7)
+* Tuebingen with Hokusai, Munch, Picasso
 * Dog with NASA
 * Kenobi with Turner
 * Cat with Kandinsky
-* Dolphin with VanGogh
+* Louvre with VanGogh
 
 ## Getting Started
 
