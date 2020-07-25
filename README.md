@@ -14,13 +14,15 @@ The representations of content and style in the convolutional neural network are
 
 ## Examples
 
-Coming soon.
+![output](images/output.png)
 
-* Tubingen with Hokusai, Munch, Picasso
-* Dog with NASA
-* Kenobi with Turner
-* Cat with Kandinsky
-* Louvre with VanGogh
+![output1](images/output1.png)
+
+![output2](images/output2.png)
+
+![output3](images/output3.png)
+
+![output4](images/output4.png)
 
 ## Getting Started
 
