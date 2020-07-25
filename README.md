@@ -13,15 +13,11 @@ Each layer of a convolutional neural network can be understood as a collection o
 The representations of content and style in the convolutional neural network are separable. That is, we can manipulate both representations independently to produce new, perceptually meaningful images. To demonstrate this finding, we generate images that mix the content and style representation from two different source images.
 
 ## Examples
-
 ![output](images/output.png)
 
 ![output1](images/output1.png)
-
 ![output2](images/output2.png)
-
 ![output3](images/output3.png)
-
 ![output4](images/output4.png)
 
 ## Getting Started
