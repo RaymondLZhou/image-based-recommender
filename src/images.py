@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import PIL.Image
 
+
 def load_image(image_path):
     max_dim = 512
 
@@ -20,6 +21,7 @@ def load_image(image_path):
     image = image[tf.newaxis, :]
     return image
 
+
 def show_image(image, title=None):
     if len(image.shape) > 3:
         image = tf.squeeze(image, axis=0)
@@ -29,10 +31,13 @@ def show_image(image, title=None):
     if title:
         plt.title(title)
 
-def plot_images(content_image, style_image, new_image=[]):
+
+def plot_images(content_image, style_image, new_image=None):
+    if new_image is None:
+        new_image = []
     cols = 3 if new_image != [] else 2
 
-    plt.figure(figsize=(15, 15)) 
+    plt.figure(figsize=(15, 15))
 
     plt.subplot(1, cols, 1)
     show_image(content_image, 'Content Image')
@@ -46,8 +51,10 @@ def plot_images(content_image, style_image, new_image=[]):
 
     plt.show()
 
+
 def clip_image(image):
     return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0)
+
 
 def tensor_to_image(tensor):
     tensor = tensor * 255
@@ -56,5 +63,5 @@ def tensor_to_image(tensor):
     if np.ndim(tensor) > 3:
         assert tensor.shape[0] == 1
         tensor = tensor[0]
-    
+
     return PIL.Image.fromarray(tensor)
