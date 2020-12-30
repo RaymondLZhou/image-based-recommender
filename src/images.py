@@ -1,7 +1,7 @@
-import tensorflow as tf
+import PIL.Image
 import matplotlib.pyplot as plt
 import numpy as np
-import PIL.Image
+import tensorflow as tf
 
 
 def load_image(image_path):
@@ -14,28 +14,25 @@ def load_image(image_path):
     shape = tf.cast(tf.shape(image)[:-1], tf.float32)
     long_dim = max(shape)
     scale = max_dim / long_dim
-
     new_shape = tf.cast(shape * scale, tf.int32)
 
     image = tf.image.resize(image, new_shape)
     image = image[tf.newaxis, :]
+
     return image
 
 
-def show_image(image, title=None):
-    if len(image.shape) > 3:
-        image = tf.squeeze(image, axis=0)
-
-    plt.imshow(image)
-
-    if title:
-        plt.title(title)
-
-
 def plot_images(content_image, style_image, new_image=None):
-    if new_image is None:
-        new_image = []
-    cols = 3 if new_image != [] else 2
+    def show_image(image, title=None):
+        if len(image.shape) > 3:
+            image = tf.squeeze(image, axis=0)
+
+        plt.imshow(image)
+
+        if title:
+            plt.title(title)
+
+    cols = 2 if new_image is None else 3
 
     plt.figure(figsize=(15, 15))
 
@@ -56,7 +53,7 @@ def clip_image(image):
     return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0)
 
 
-def tensor_to_image(tensor):
+def convert_tensor_to_image(tensor):
     tensor = tensor * 255
     tensor = np.array(tensor, dtype=np.uint8)
 

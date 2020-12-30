@@ -39,8 +39,8 @@ These can be installed using ```pip install library-name```.
 How to run the application
 
 1. Clone the repository.
-2. Open [transfer.py](src/transfer.py). Adjust the hyperparameters at the top of the file as needed. 
-3. Run [transfer.py](src/transfer.py) with ```python transfer.py```. The output image is saved in [data/output](data/output).
+2. Open [hyperparameters.py](src/hyperparameters.py). Adjust the hyperparameters at the top of the file as needed. 
+3. Run [main.py](src/main.py) with ```python main.py```. The output image is saved in [data/output](data/output).
 
 ## Built With
 

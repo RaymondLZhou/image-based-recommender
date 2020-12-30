@@ -9,9 +9,7 @@ def vgg_layers(layer_names):
 
     outputs = [vgg.get_layer(name).output for name in layer_names]
 
-    model = tf.keras.Model([vgg.input], outputs)
-
-    return model
+    return tf.keras.Model([vgg.input], outputs)
 
 
 def gram_matrix(input_tensor):
@@ -33,15 +31,13 @@ class StyleContentModel(tf.keras.models.Model, ABC):
         self.vgg.trainable = False
 
     def call(self, inputs, *args, **kwargs):
-        inputs = inputs * 255.0
-        preprocessed_input = tf.keras.applications.vgg19.preprocess_input(inputs)
+        preprocessed_input = tf.keras.applications.vgg19.preprocess_input(inputs * 255.0)
         outputs = self.vgg(preprocessed_input)
-        style_outputs, content_outputs = (outputs[:self.num_style_layers], outputs[self.num_style_layers:])
 
+        style_outputs, content_outputs = (outputs[:self.num_style_layers], outputs[self.num_style_layers:])
         style_outputs = [gram_matrix(style_output) for style_output in style_outputs]
 
         content_dict = {content_name: value for content_name, value in zip(self.content_layers, content_outputs)}
-
         style_dict = {style_name: value for style_name, value in zip(self.style_layers, style_outputs)}
 
         return {'content': content_dict, 'style': style_dict}

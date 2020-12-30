@@ -1,43 +1,70 @@
+import time
+
 import tensorflow as tf
 
 import images
-import learn
+import model
 
 
-def transfer_learn():
-    content_name = 'tubingen'
-    style_name = 'Picasso'
+def transfer_style(image, epochs, steps_per_epoch, optimizer, layers, inputs, weights):
+    @tf.function()
+    def train_step():
+        def compute_style_content_loss():
+            style_outputs = outputs['style']
+            content_outputs = outputs['content']
 
-    epochs = 3
-    steps_per_epoch = 1
+            content_image = inputs['content_image']
+            style_image = inputs['style_image']
 
-    optimizer = tf.optimizers.Adam(learning_rate=0.02)
+            style_targets = extractor(style_image)['style']
+            content_targets = extractor(content_image)['content']
 
-    style_weight = 1e-2
-    content_weight = 1e3
-    total_variation_weight = 30
-    weights = dict(style_weight=style_weight, content_weight=content_weight,
-                   total_variation_weight=total_variation_weight)
+            style_weight = weights['style_weight']
+            content_weight = weights['content_weight']
 
-    image_path = '../data/'
+            style_loss = tf.add_n(
+                [tf.reduce_mean((style_outputs[name] - style_targets[name]) ** 2) for name in style_outputs.keys()])
+            style_loss *= style_weight / len(style_layers)
 
-    content_layers = ['block5_conv2']
-    style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
-    layers = {'content_layers': content_layers, 'style_layers': style_layers}
+            content_loss = tf.add_n(
+                [tf.reduce_mean((content_outputs[name] - content_targets[name]) ** 2) for name in
+                 content_outputs.keys()])
+            content_loss *= content_weight / len(content_layers)
 
-    content_path = image_path + 'content/' + content_name + '.jpg'
-    style_path = image_path + 'style/' + style_name + '.jpg'
-    output_path = image_path + 'output/' + content_name + style_name + '.jpg'
+            return style_loss + content_loss
 
-    content_image = images.load_image(content_path)
-    style_image = images.load_image(style_path)
-    inputs = {'content_image': content_image, 'style_image': style_image}
+        total_variation_weight = weights['total_variation_weight']
 
-    images.plot_images(content_image, style_image)
+        with tf.GradientTape() as tape:
+            outputs = extractor(image)
+            loss = compute_style_content_loss()
+            loss += total_variation_weight * tf.image.total_variation(image)
 
-    image = tf.Variable(content_image)
-    learn.transfer_style(image, epochs, steps_per_epoch, optimizer, layers, inputs, weights)
-    images.tensor_to_image(image).save(output_path)
+        grad = tape.gradient(loss, image)
+        optimizer.apply_gradients([(grad, image)])
 
-    new_image = images.load_image(output_path)
-    images.plot_images(content_image, style_image, new_image)
+        image.assign(images.clip_image(image))
+
+    style_layers = layers['style_layers']
+    content_layers = layers['content_layers']
+
+    extractor = model.StyleContentModel(style_layers, content_layers)
+
+    start = time.time()
+
+    for epoch in range(epochs):
+        start_epoch = time.time()
+
+        print("Training epoch: {} out of {}".format(epoch + 1, epochs))
+
+        for step in range(steps_per_epoch):
+            if (step + 1) % 50 == 0:
+                print("Step: {}".format(step + 1))
+
+            train_step()
+
+        end = time.time()
+
+        print("Epoch time: {:.1f}s".format(end - start_epoch))
+        print("Total time: {:.1f}s".format(end - start))
+        print()
