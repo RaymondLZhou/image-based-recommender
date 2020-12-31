@@ -3,8 +3,8 @@ import tensorflow as tf
 content_name = 'tubingen'
 style_name = 'Picasso'
 
-epochs = 3
-steps_per_epoch = 1
+epochs = 10
+steps_per_epoch = 100
 
 optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
