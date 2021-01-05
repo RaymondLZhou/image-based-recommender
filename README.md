@@ -2,7 +2,7 @@
 
 Neural style transfer built on TensorFlow and Keras in Python with a deep convolutional neural network (CNN). Creates artistic image by recombining input content and style, using NumPy to shape neural representations.
 
-## Features
+## Description
 
 Performs neural style transfer as described in the original paper, [A Neural Algorithm of Artistic Style](https://arxiv.org/pdf/1508.06576.pdf) by Gatys, Ecker, and Bethge. The following is taken from the paper.
 
@@ -14,32 +14,19 @@ The representations of content and style in the convolutional neural network are
 
 ## Examples
 ![output1](images/output1.png)
+
 ![output2](images/output2.png)
+
 ![output3](images/output3.png)
-![output4](images/output4.png)
+
 ![output](images/output.png)
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine.
-
-### Prerequisites
-
-Python must be installed, along with the following libraries.
-
-* TensorFlow
-* Matplotlib
-* NumPy
-* Pillow
-
-These can be installed using ```pip install library-name```.
-
-### Running
-
 How to run the application
 
 1. Clone the repository.
-2. Open [hyperparameters.py](src/hyperparameters.py). Adjust the hyperparameters at the top of the file as needed. 
+2. Open [hyperparameters.py](src/hyperparameters.py) and adjust the hyperparameters as desired. 
 3. Run [main.py](src/main.py) with ```python main.py```. The output image is saved in [data/output](data/output).
 
 ## Built With
