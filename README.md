@@ -4,13 +4,9 @@ Neural style transfer built on TensorFlow and Keras in Python with a deep convol
 
 ## Description
 
-Performs neural style transfer as described in the original paper, [A Neural Algorithm of Artistic Style](https://arxiv.org/pdf/1508.06576.pdf) by Gatys, Ecker, and Bethge. The following is taken from the paper.
+The technique of neural style transfer is described in the original paper, [*A Neural Algorithm of Artistic Style*](https://arxiv.org/pdf/1508.06576.pdf) by Gatys, Ecker, and Bethge. The goal is to take a content image and a style image, then combine them so that the output image looks like the content image in the style of the style image. 
 
-We introduce an artificial system based on a deep neural network that creates artistic images of high perceptual quality. The system uses neural representations to separate and recombine content and style of arbitrary images, providing a neural algorithm for the creation of artistic images.
-
-Each layer of a convolutional neural network can be understood as a collection of image filters, each of which extracts a certain feature from the input image. When convolutional neural networks are trained on object recognition, they develop a representation of the image that makes object information increasingly explicit along the processing hierarchy.
-
-The representations of content and style in the convolutional neural network are separable. That is, we can manipulate both representations independently to produce new, perceptually meaningful images. To demonstrate this finding, we generate images that mix the content and style representation from two different source images.
+We define two loss functions, the content loss and the style loss. We attempt to transform the output image to minimize both loss functions. Both content and style images are fed into the VGG19 model, and values from the intermediate layers are used to compute the losses.
 
 ## Examples
 ![output1](images/output1.png)
