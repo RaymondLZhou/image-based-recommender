@@ -1,6 +1,6 @@
 # Artistic Learning
 
-Neural style transfer built on TensorFlow and Keras in Python with a deep convolutional neural network (CNN). Creates artistic image by recombining input content and style, using NumPy to shape neural representations.
+Neural style transfer built on TensorFlow and Keras in Python with a deep convolutional neural network (CNN). Creates artistic image by recombining input content and style.
 
 ## Description
 
